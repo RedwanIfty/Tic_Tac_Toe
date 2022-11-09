@@ -5,6 +5,7 @@ const Board=()=>{
     const [state,setState]=useState(Array(9).fill(null));
     console.log("state",state);
     const [isXTrun,setIsXTurn] =useState(true);
+    const[count,setCount] =useState(1);
     const checkWinner=()=>{
         const winnerLogic=[
             [0,1,2],
@@ -31,6 +32,16 @@ const Board=()=>{
         if(state[index]!==null){
             return;
         }
+        else
+        {
+            setCount(count+1)
+            console.log("count",count)
+            if(count>=9){
+                setCount(1)
+                alert("match tie")
+                setState(Array(9).fill(null))
+            }
+        }
         const copyState= [...state];
         copyState[index]=isXTrun ? "X" :  "0";
         setState(copyState);
@@ -38,12 +49,13 @@ const Board=()=>{
      }
      const reset=()=>{
         setState(Array(9).fill(null))
+        setCount(1)
      }
     return(
         <div className="board-container">
-            { isWinner ? (<>{isWinner} one is winner <button onClick={reset}>play again</button></>):
+            { isWinner ? (<>{isWinner} is winner <button onClick={reset}>play again</button></>):
             (<>
-            <h4>Player {isXTrun ? "X" : "0"} move</h4>
+            <h4>Player {isXTrun ? "X" : "0"}'s move</h4>
             <div className="board-row">
                 <Square onClick={()=>handleClick(0)} value={state[0]}/>
                 <Square onClick={()=>handleClick(1)} value={state[1]}/>
